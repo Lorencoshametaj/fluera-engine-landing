@@ -1,0 +1,175 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/lib/site";
+
+const title = "Quickstart";
+const description = "Add fluera_canvas to your Flutter app in five minutes.";
+
+const installSnippet = `flutter pub add fluera_canvas`;
+
+const gitSnippet = `dependencies:
+  fluera_canvas:
+    git:
+      url: ${SITE.github}.git
+      ref: main`;
+
+const minimalSnippet = `import 'package:flutter/material.dart';
+import 'package:fluera_canvas/fluera_canvas.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) => const MaterialApp(
+        home: Scaffold(body: MyCanvas()),
+      );
+}
+
+class MyCanvas extends StatefulWidget {
+  const MyCanvas({super.key});
+  @override
+  State<MyCanvas> createState() => _MyCanvasState();
+}
+
+class _MyCanvasState extends State<MyCanvas> {
+  final controller = InfiniteCanvasController();
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InfiniteCanvasGestureDetector(
+      controller: controller,
+      child: CustomPaint(
+        painter: MyScenePainter(controller),
+        size: Size.infinite,
+      ),
+    );
+  }
+}`;
+
+const camera = `controller.animateTo(
+  offset: Offset(-400, -300),
+  scale: 1.5,
+  duration: const Duration(milliseconds: 600),
+  curve: Curves.easeInOutCubic,
+);`;
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- HERO -->
+  <section class="border-b border-white/[0.04]">
+    <div class="container-site py-16 sm:py-20">
+      <p class="eyebrow mb-5 text-accent-glow">Quickstart · ~5 min</p>
+      <h1 class="font-serif text-display-xl text-paper-50 mb-5">
+        From zero to a drawing canvas.
+      </h1>
+      <p class="prose-ink text-lg max-w-2xl">
+        A minimal Flutter app with a full Fluera canvas — infinite pan/zoom,
+        pressure-aware input, scene graph ready for your strokes. No gesture
+        wiring or camera math to roll yourself.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTENT -->
+  <article class="container-site max-w-4xl py-16 sm:py-20 prose-v2">
+    <h2>Prerequisites</h2>
+    <ul>
+      <li>Flutter <strong>3.27</strong> or newer</li>
+      <li>Dart SDK <strong>3.7</strong> or newer</li>
+      <li>A physical device or simulator for pressure testing (iPad + Apple Pencil recommended)</li>
+    </ul>
+
+    <h2>1. Install</h2>
+    <p>Add the package to your Flutter project:</p>
+    <pre><code>{installSnippet}</code></pre>
+    <p>
+      Pre-release? Pin directly to git:
+    </p>
+    <pre><code>{gitSnippet}</code></pre>
+
+    <h2>2. Wire the widget</h2>
+    <p>
+      A drawing canvas is two things: an <code>InfiniteCanvasController</code>
+      (owns camera, pan, zoom, rotation) and an
+      <code>InfiniteCanvasGestureDetector</code> that feeds input into it.
+      Drop this into <code>lib/main.dart</code>, run <code>flutter run</code>, and draw.
+    </p>
+    <pre><code>{minimalSnippet}</code></pre>
+    <p>
+      The controller is a <code>ChangeNotifier</code>, so anything that paints
+      (here, <code>MyScenePainter</code>) can subscribe and repaint when the
+      camera moves. Pressure, tilt and palm rejection work out of the box on
+      platforms that expose them.
+    </p>
+
+    <h2>3. Drive the camera</h2>
+    <p>
+      Animations are first-class. Jump, spring, or chain multi-phase camera
+      moves:
+    </p>
+    <pre><code>{camera}</code></pre>
+    <p>
+      Tune the feel with <code>LiquidCanvasConfig</code> — pan friction, zoom
+      spring stiffness and damping, elastic overshoot, node-drag physics. The
+      defaults are tuned for stylus input; override what you need.
+    </p>
+
+    <h2>4. Go further</h2>
+    <p>
+      Everything above is in the MIT core package. For advanced features —
+      collaboration, AI, PDF annotation, the full 13-brush set, encrypted
+      storage — add <code>fluera_engine_pro</code> on top. See
+      <a href="/pricing">pricing</a>.
+    </p>
+
+    <h2>Native live-stroke plugin (optional)</h2>
+    <p>
+      On iOS, Android and macOS the full 60 FPS path uses a native GPU
+      overlay. During the pre-release the native renderers still ship through
+      a separate plugin; add it to your pubspec if you want the native path:
+    </p>
+    <pre><code>{`dependencies:
+  fluera_canvas: ^0.1.0
+  fluera_engine:         # optional — unlocks native live-stroke
+    git:
+      url: ${SITE.github}.git
+      ref: main`}</code></pre>
+    <p>
+      Without it, a Dart-only painter takes over automatically. The rest of
+      the API is identical.
+    </p>
+
+    <h2>What next</h2>
+    <ul>
+      <li>
+        <a href={`${SITE.github}/tree/main/example`} target="_blank" rel="noopener">
+          Full example project
+        </a>
+         — scene graph, export, tools, brushes.
+      </li>
+      <li>
+        <a href={`${SITE.github}#readme`} target="_blank" rel="noopener">
+          README on GitHub
+        </a>
+         — platform matrix, architecture notes.
+      </li>
+      <li>
+        <a href="/pricing">Pricing & licensing</a> — MIT core vs commercial Pro.
+      </li>
+    </ul>
+
+    <h2>Stuck?</h2>
+    <p>
+      Open an issue on <a href={`${SITE.github}/issues`} target="_blank" rel="noopener">GitHub</a>
+       or email <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>. We read everything.
+    </p>
+  </article>
+</BaseLayout>

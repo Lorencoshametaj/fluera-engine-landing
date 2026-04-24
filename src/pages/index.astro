@@ -1,0 +1,229 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FeatureCard from "@/components/FeatureCard.astro";
+import { SITE } from "@/lib/site";
+
+const title = "The 2D canvas engine for Flutter";
+const description = SITE.description;
+
+const stats = [
+  { n: "13", label: "Brush engines", sub: "pressure · tilt · velocity" },
+  { n: "17", label: "GPU shaders", sub: "fragment + compute" },
+  { n: "6", label: "Native platforms", sub: "Vulkan · Metal · OpenGL · D3D11 · WebGPU" },
+  { n: "<15 ms", label: "Stroke latency", sub: "on native mobile" },
+  { n: "60 FPS", label: "Sustained", sub: "on consumer hardware" },
+];
+
+const capabilities = [
+  {
+    icon: "01",
+    title: "Pressure-sensitive brushes",
+    body: "13 brush engines — ballpoint, pencil, fountain pen, marker, charcoal, oil, spray, watercolor, highlighter and more. Each is a programmable pipeline: One-Euro smoothing, Douglas-Peucker simplification, per-brush fragment shader, Apple Pencil prediction on iOS.",
+  },
+  {
+    icon: "02",
+    title: "Spatial scene graph",
+    body: "R-tree indexing for O(log n) hit testing and viewport culling. 14+ node types: strokes, Bézier paths, shapes, raster, rich text, LaTeX, PDF embeds, groups, layers, adjustment nodes.",
+  },
+  {
+    icon: "03",
+    title: "GPU everywhere",
+    body: "Native renderers per platform — Vulkan on Android, Metal on iOS and macOS, OpenGL on Linux, Direct3D 11 on Windows, WebGPU on the web. Live stroke overlays bypass the Dart canvas for sub-15 ms latency on mobile.",
+  },
+  {
+    icon: "04",
+    title: "Bring your own backend",
+    body: "Local SQLite with optional SQLCipher (AES-256) at rest. Storage, cloud sync, presence and permissions are all adapter interfaces — plug Supabase, Firebase, S3, REST. CRDT with vector clocks for real-time collaboration.",
+  },
+  {
+    icon: "05",
+    title: "Export pipeline",
+    body: "PNG, JPEG, WebP, SVG, multi-page PDF, and the proprietary .fluera format. Rasterization runs in Dart isolates, so it never blocks the UI — even for 5M+ pixel exports at print DPI.",
+  },
+  {
+    icon: "06",
+    title: "Modular by design",
+    body: "Every feature is opt-in via FlueraCanvasConfig. Core modules auto-register; Pro modules (AI, collaboration, PDF annotation, time travel) ship as separate packages. Ship only what you need.",
+  },
+];
+
+const codeSnippet = `import 'package:fluera_canvas/fluera_canvas.dart';
+
+final controller = InfiniteCanvasController();
+
+InfiniteCanvasGestureDetector(
+  controller: controller,
+  child: CustomPaint(
+    painter: MyScenePainter(controller),
+    size: Size.infinite,
+  ),
+);`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: "Fluera Engine",
+  description: SITE.description,
+  programmingLanguage: "Dart",
+  codeRepository: SITE.github,
+  url: SITE.url,
+  author: { "@type": "Organization", name: "Fluera" },
+};
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <!-- HERO -->
+  <section class="relative overflow-hidden border-b border-white/[0.04]">
+    <div class="glow-orb h-[540px] w-[540px] -top-40 -left-32 bg-accent-ink/25 animate-orb-pulse" aria-hidden="true"></div>
+    <div class="glow-orb h-[420px] w-[420px] top-20 -right-32 bg-accent-glow/20 animate-orb-pulse" style="animation-delay: -3s" aria-hidden="true"></div>
+
+    <div class="container-site relative py-20 sm:py-28 md:py-32">
+      <p class="eyebrow mb-6 text-accent-glow">Flutter SDK · v0.1.0-dev</p>
+      <h1 class="font-serif text-display-2xl text-paper-50 mb-7 max-w-5xl">
+        The 2D canvas engine<br />
+        <span class="text-gradient">behind Fluera, for your Flutter app.</span>
+      </h1>
+      <p class="prose-ink text-lg sm:text-xl max-w-2xl mb-10">
+        Pressure-sensitive input, infinite canvas, a spatial scene graph, GPU
+        rendering on six platforms. Everything we built for the consumer app,
+        packaged as <code class="font-mono text-accent-glow text-base">fluera_canvas</code>
+        on pub.dev — MIT, opinionated, production-tested.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="/quickstart" class="btn-primary">
+          Get started
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+        </a>
+        <a href={SITE.github} target="_blank" rel="noopener" class="btn-secondary">
+          View on GitHub
+        </a>
+        <a href="/pricing" class="btn-ghost text-sm">See pricing →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CODE SNIPPET -->
+  <section class="container-site py-14 sm:py-20">
+    <div class="card overflow-hidden">
+      <div class="flex items-center justify-between border-b border-white/[0.04] px-5 py-3">
+        <div class="flex items-center gap-2 text-xs font-mono text-ink-500">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-signal-bad/60"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-signal-warn/60"></span>
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-signal-ok/60"></span>
+          <span class="ml-3 uppercase tracking-widest">my_canvas.dart</span>
+        </div>
+        <span class="pill text-[10px]">~5 lines of wiring</span>
+      </div>
+      <pre class="overflow-x-auto px-6 py-6 text-sm leading-relaxed text-paper-100"><code set:html={codeSnippet} /></pre>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="border-y border-white/[0.04] bg-ink-900/40">
+    <div class="container-site py-14 sm:py-16">
+      <div class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-5">
+        {stats.map((s) => (
+          <div>
+            <div class="font-serif text-3xl sm:text-4xl text-paper-50 mb-1">{s.n}</div>
+            <div class="text-sm text-paper-200 mb-1">{s.label}</div>
+            <div class="font-mono text-[11px] uppercase tracking-widest text-ink-500">{s.sub}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="container-site py-20 sm:py-28">
+    <div class="mb-14 max-w-2xl">
+      <p class="eyebrow mb-5 text-accent-glow">What's in the box</p>
+      <h2 class="font-serif text-display-lg text-paper-50 mb-5">
+        A complete drawing engine — not a demo.
+      </h2>
+      <p class="prose-ink text-lg">
+        Every piece below ships in v0.1. This is the same code running in the
+        Fluera app on iOS, Android, macOS, Windows, Linux and the web.
+      </p>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {capabilities.map((c) => (
+        <FeatureCard icon={c.icon} title={c.title} body={c.body} />
+      ))}
+    </div>
+  </section>
+
+  <!-- CORE vs PRO -->
+  <section class="border-t border-white/[0.04] bg-ink-900/40">
+    <div class="container-site py-20 sm:py-28">
+      <div class="mb-14 max-w-2xl">
+        <p class="eyebrow mb-5 text-accent-glow">Two packages, one engine</p>
+        <h2 class="font-serif text-display-lg text-paper-50 mb-5">
+          MIT core. Commercial Pro.
+        </h2>
+        <p class="prose-ink text-lg">
+          <code class="font-mono text-accent-glow">fluera_canvas</code> is MIT-licensed and
+          lives on pub.dev. <code class="font-mono text-accent-glow">fluera_engine_pro</code>
+          is a separate commercial package that layers collaboration, AI, PDF
+          and advanced brushes on top — for teams shipping real products.
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="card p-8">
+          <div class="pill mb-4 text-[11px] text-signal-ok">fluera_canvas · MIT</div>
+          <h3 class="font-serif text-2xl text-paper-50 mb-2">Core</h3>
+          <p class="prose-ink mb-5">
+            Everything you need for a drawing surface. Source on GitHub, shipped on pub.dev.
+          </p>
+          <ul class="space-y-2 text-sm text-paper-200">
+            <li>✓ Infinite canvas controller + pressure / tilt gestures</li>
+            <li>✓ Scene graph with stroke, shape, text, image, path nodes</li>
+            <li>✓ Base brushes: ballpoint, pencil, highlighter</li>
+            <li>✓ One-Euro smoothing, palm rejection, stylus prediction</li>
+            <li>✓ PNG · JPEG · WebP · SVG export</li>
+            <li>✓ Module system for custom extensions</li>
+            <li>✓ iOS · Android · macOS · Windows · Linux · Web</li>
+          </ul>
+        </div>
+
+        <div class="card p-8 border-accent-ink/40 bg-gradient-to-b from-accent-ink/10 to-transparent">
+          <div class="pill mb-4 text-[11px] text-accent-glow">fluera_engine_pro · Commercial</div>
+          <h3 class="font-serif text-2xl text-paper-50 mb-2">Pro</h3>
+          <p class="prose-ink mb-5">
+            The advanced modules, as a separate package on top of core.
+          </p>
+          <ul class="space-y-2 text-sm text-paper-200">
+            <li>✓ 13 brush engines including watercolor, charcoal, fountain pen</li>
+            <li>✓ Real-time collaboration (CRDT, vector clocks)</li>
+            <li>✓ AI: LaTeX OCR · proactive analysis · chat</li>
+            <li>✓ PDF annotation + multi-page export</li>
+            <li>✓ Timeline branching + time-travel playback</li>
+            <li>✓ SQLCipher AES-256 encrypted storage</li>
+            <li>✓ Priority support + SLA</li>
+          </ul>
+          <a href="/pricing" class="btn-primary mt-7">See pricing →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container-site py-24 sm:py-32 text-center">
+    <p class="eyebrow mb-5 text-accent-glow">Ready to draw</p>
+    <h2 class="font-serif text-display-lg text-paper-50 mb-6 max-w-3xl mx-auto">
+      Ship a canvas in an afternoon.
+    </h2>
+    <p class="prose-ink text-lg max-w-2xl mx-auto mb-10">
+      Add one package, wire one widget. The hard parts — pressure smoothing,
+      GPU rendering, scene graph, export — are already solved.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="/quickstart" class="btn-primary">Start the 5-min quickstart</a>
+      <a href={SITE.github} target="_blank" rel="noopener" class="btn-secondary">GitHub</a>
+    </div>
+  </section>
+</BaseLayout>

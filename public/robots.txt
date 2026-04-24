@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://engine.fluera.dev/sitemap-index.xml

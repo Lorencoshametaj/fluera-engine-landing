@@ -1,0 +1,28 @@
+---
+import { SITE } from "@/lib/site";
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-white/[0.04] bg-ink-950">
+  <div class="container-site flex flex-col gap-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+    <div class="flex items-center gap-2.5 text-paper-200">
+      <img src="/favicon.png" alt="" width="20" height="20" class="rounded-sm opacity-80" />
+      <span class="font-serif text-base">Fluera Engine</span>
+      <span class="text-ink-500">·</span>
+      <span class="font-mono text-xs uppercase tracking-widest text-ink-500">v0.1.0-dev</span>
+    </div>
+
+    <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-paper-300" aria-label="Footer">
+      <a href={SITE.github} target="_blank" rel="noopener" class="hover:text-paper-50">GitHub</a>
+      <a href={SITE.pubDev} target="_blank" rel="noopener" class="hover:text-paper-50">pub.dev</a>
+      <a href="/quickstart" class="hover:text-paper-50">Quickstart</a>
+      <a href="/pricing" class="hover:text-paper-50">Pricing</a>
+      <a href={SITE.parentApp} target="_blank" rel="noopener" class="hover:text-paper-50">Fluera app ↗</a>
+      <a href={`mailto:${SITE.contactEmail}`} class="hover:text-paper-50">Contact</a>
+    </nav>
+
+    <div class="text-xs text-ink-500">
+      © {year} Fluera
+    </div>
+  </div>
+</footer>

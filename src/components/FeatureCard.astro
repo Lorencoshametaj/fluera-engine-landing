@@ -1,0 +1,18 @@
+---
+export interface Props {
+  title: string;
+  body: string;
+  icon?: string;
+}
+const { title, body, icon } = Astro.props;
+---
+
+<article class="card p-6 sm:p-7">
+  {icon && (
+    <div class="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-lg bg-accent-ink/15 text-accent-glow font-mono text-sm">
+      {icon}
+    </div>
+  )}
+  <h3 class="font-serif text-xl text-paper-50 mb-2.5">{title}</h3>
+  <p class="prose-ink text-[0.95rem]">{body}</p>
+</article>

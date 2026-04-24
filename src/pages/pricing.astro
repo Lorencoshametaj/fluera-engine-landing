@@ -1,0 +1,155 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/lib/site";
+
+const title = "Pricing";
+const description = "fluera_canvas is MIT, free for any use. fluera_engine_pro is a commercial add-on for advanced features.";
+
+const coreFeatures = [
+  "Infinite canvas controller + pressure/tilt gestures",
+  "Scene graph with stroke, shape, text, image, path nodes",
+  "3 base brushes (ballpoint, pencil, highlighter)",
+  "One-Euro smoothing, palm rejection, stylus prediction",
+  "Pen, eraser, shape, text, image tools",
+  "Undo/redo with delta tracking",
+  "PNG · JPEG · WebP · SVG export",
+  "iOS · Android · macOS · Windows · Linux · Web",
+  "Module system for custom extensions",
+];
+
+const proFeatures = [
+  "All 13 brush engines + custom brush SDK",
+  "Real-time collaboration (CRDT, vector clocks)",
+  "AI: LaTeX OCR · proactive analysis · chat",
+  "PDF annotation + multi-page export",
+  "Timeline branching + time-travel playback",
+  "SQLCipher AES-256 encrypted storage",
+  "Native GPU live-stroke plugin (Vulkan · Metal)",
+  "Commercial-use license",
+  "Priority support + SLA",
+];
+
+const faqs = [
+  {
+    q: "What's the license for fluera_canvas?",
+    a: "MIT — the standard permissive license. Use it in personal, open-source or commercial products. No royalties, no change-date clauses, no attribution requirements beyond the MIT notice.",
+  },
+  {
+    q: "Do I need Pro to ship a commercial app?",
+    a: "No. The MIT core (fluera_canvas) is enough for most drawing apps. Pro is for teams that want the advanced modules — collaboration, AI, PDF annotation, the full brush set, encrypted storage — without building them themselves.",
+  },
+  {
+    q: "How is Pro priced?",
+    a: "Per product, per seat, or per company depending on scale. We're onboarding the first design partners — pricing is negotiated directly so we can match your stage. Email us with a sentence on what you're building.",
+  },
+  {
+    q: "Do you offer discounts for startups and researchers?",
+    a: "Yes. Pre-seed and seed startups, academic researchers, and accessibility-focused projects get significant discounts on Pro. Just ask.",
+  },
+  {
+    q: "Can I build a drawing app that competes with Fluera?",
+    a: "Yes. MIT puts no restrictions on what you build. Pro follows the same spirit — a standard commercial license with no field-of-use limits.",
+  },
+  {
+    q: "Is there a trial for Pro?",
+    a: "We give design partners a time-boxed trial license. Reach out — it's a short conversation.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="border-b border-white/[0.04]">
+    <div class="container-site py-16 sm:py-20">
+      <p class="eyebrow mb-5 text-accent-glow">Pricing</p>
+      <h1 class="font-serif text-display-xl text-paper-50 mb-5 max-w-3xl">
+        MIT core. Commercial Pro.
+      </h1>
+      <p class="prose-ink text-lg max-w-2xl">
+        <code class="font-mono text-accent-glow">fluera_canvas</code> is MIT —
+        free forever, no strings. Pro is a separate commercial package for
+        teams that want the advanced modules on top.
+      </p>
+    </div>
+  </section>
+
+  <!-- TIERS -->
+  <section class="container-site py-16 sm:py-20">
+    <div class="grid gap-6 md:grid-cols-2">
+      <!-- CORE -->
+      <div class="card p-8 sm:p-10 flex flex-col">
+        <div class="pill mb-5 text-[11px] text-signal-ok">fluera_canvas · MIT</div>
+        <h2 class="font-serif text-3xl text-paper-50 mb-2">Core</h2>
+        <p class="prose-ink mb-6">
+          The infinite-canvas SDK. MIT-licensed, on pub.dev, free for any use.
+        </p>
+        <div class="mb-8">
+          <div class="font-serif text-5xl text-paper-50">Free</div>
+          <div class="text-sm text-ink-500 mt-1">MIT · forever</div>
+        </div>
+        <ul class="space-y-2.5 text-sm text-paper-200 mb-8 flex-1">
+          {coreFeatures.map((f) => (
+            <li class="flex gap-3">
+              <span class="text-signal-ok">✓</span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="flex flex-wrap gap-3">
+          <a href={SITE.pubDev} target="_blank" rel="noopener" class="btn-secondary">pub.dev</a>
+          <a href={SITE.github} target="_blank" rel="noopener" class="btn-secondary">GitHub</a>
+          <a href="/quickstart" class="btn-ghost">Quickstart →</a>
+        </div>
+      </div>
+
+      <!-- PRO -->
+      <div class="card p-8 sm:p-10 flex flex-col border-accent-ink/40 bg-gradient-to-b from-accent-ink/10 to-transparent">
+        <div class="pill mb-5 text-[11px] text-accent-glow">fluera_engine_pro · Commercial</div>
+        <h2 class="font-serif text-3xl text-paper-50 mb-2">Pro</h2>
+        <p class="prose-ink mb-6">
+          Advanced modules layered on core. Priced per product or per seat.
+        </p>
+        <div class="mb-8">
+          <div class="font-serif text-5xl text-paper-50">Contact us</div>
+          <div class="text-sm text-ink-500 mt-1">Early-partner pricing available</div>
+        </div>
+        <ul class="space-y-2.5 text-sm text-paper-200 mb-8 flex-1">
+          {proFeatures.map((f) => (
+            <li class="flex gap-3">
+              <span class="text-accent-glow">✓</span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="flex flex-wrap gap-3">
+          <a href={`mailto:${SITE.contactEmail}?subject=Fluera%20Engine%20Pro`} class="btn-primary">Talk to us</a>
+          <a href={SITE.github} target="_blank" rel="noopener" class="btn-ghost">See core on GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="border-t border-white/[0.04] bg-ink-900/40">
+    <div class="container-site max-w-3xl py-16 sm:py-20">
+      <p class="eyebrow mb-5 text-accent-glow">FAQ</p>
+      <h2 class="font-serif text-display-lg text-paper-50 mb-10">Common questions</h2>
+
+      <div class="space-y-8">
+        {faqs.map((f) => (
+          <div>
+            <h3 class="font-serif text-xl text-paper-50 mb-2.5">{f.q}</h3>
+            <p class="prose-ink">{f.a}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-14 pt-10 border-t border-white/[0.04]">
+        <p class="text-paper-200">
+          Still unsure? Email
+          <a href={`mailto:${SITE.contactEmail}`} class="text-accent-glow underline underline-offset-4">{SITE.contactEmail}</a>.
+          We reply within a business day.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
