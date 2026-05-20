@@ -1,0 +1,149 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/lib/site";
+
+const title = "fluera_canvas vs the alternatives";
+const description = "Honest comparison with flutter_painter, scribble, perfect_freehand, and raw CustomPaint. Pick what fits your scope.";
+
+const rows = [
+  { f: "Infinite canvas (pan/zoom/rotate)", fc: "✓", fp: "—", sc: "—", pf: "—", cp: "DIY" },
+  { f: "Camera physics (spring, momentum)", fc: "✓", fp: "—", sc: "—", pf: "—", cp: "DIY" },
+  { f: "Pressure-sensitive input", fc: "✓", fp: "—", sc: "✓", pf: "input only", cp: "DIY" },
+  { f: "Stylus tilt + prediction (iOS)", fc: "✓", fp: "—", sc: "—", pf: "—", cp: "DIY" },
+  { f: "Palm rejection", fc: "✓ pluggable", fp: "—", sc: "basic", pf: "—", cp: "DIY" },
+  { f: "Scene graph (spatial index)", fc: "✓ R-tree", fp: "—", sc: "—", pf: "—", cp: "DIY" },
+  { f: "Undo/redo", fc: "✓ delta-tracked", fp: "✓", sc: "✓", pf: "—", cp: "DIY" },
+  { f: "Export (PNG / SVG / PDF)", fc: "✓ PNG·JPEG·WebP·SVG", fp: "raster only", sc: "raster only", pf: "—", cp: "DIY" },
+  { f: "GPU native live-stroke", fc: "Vulkan / Metal", fp: "—", sc: "—", pf: "—", cp: "—" },
+  { f: "Platforms", fc: "iOS · Android · macOS · Windows · Linux · Web", fp: "all Flutter", sc: "all Flutter", pf: "all Flutter", cp: "all Flutter" },
+  { f: "License", fc: "MIT", fp: "MIT", sc: "MIT", pf: "MIT", cp: "built-in" },
+];
+
+const alternatives = [
+  {
+    name: "perfect_freehand",
+    tagline: "The stroke algorithm, nothing else.",
+    body: "A port of steveruizok's beautiful pressure-aware stroke smoothing. If you already have a canvas, camera and scene management, and you only need high-quality stroke shapes, this is what you want. Many of fluera_canvas's rendering internals take inspiration from it.",
+    url: "https://pub.dev/packages/perfect_freehand",
+    pick: "Use if you have an existing drawing app and want better-looking strokes.",
+  },
+  {
+    name: "scribble",
+    tagline: "A clean signature pad.",
+    body: "Excellent for signatures, quick sketches, single-page drawing surfaces. Bounded canvas, simple stroke, minimal dependencies, mobile-first. No infinite canvas, no scene graph, no camera transforms.",
+    url: "https://pub.dev/packages/scribble",
+    pick: "Use if your canvas fits on one screen and the user draws then saves.",
+  },
+  {
+    name: "flutter_painter",
+    tagline: "Vector tools on a fixed surface.",
+    body: "Pen, shapes, text, image overlay on a bounded painter. Good for photo annotation, simple diagram editing. Not built for long sessions, thousands of nodes, or real stylus fidelity.",
+    url: "https://pub.dev/packages/flutter_painter",
+    pick: "Use for photo annotation or quick diagram editing with 10-50 elements.",
+  },
+  {
+    name: "Raw CustomPaint",
+    tagline: "The Flutter primitive.",
+    body: "Everything above is eventually built on CustomPaint. Rolling your own gives full control — but you'll spend weeks on camera math, input smoothing, hit testing, viewport culling. That's the work fluera_canvas packages up.",
+    url: "https://api.flutter.dev/flutter/widgets/CustomPaint-class.html",
+    pick: "Use if your needs are narrow enough that a packaged SDK is overkill.",
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="border-b border-white/[0.04]">
+    <div class="container-site py-16 sm:py-20">
+      <p class="eyebrow mb-5 text-accent-glow">Compare</p>
+      <h1 class="font-serif text-display-xl text-paper-50 mb-5 max-w-3xl">
+        fluera_canvas vs the alternatives.
+      </h1>
+      <p class="prose-ink text-lg max-w-2xl">
+        Most Flutter drawing packages solve a narrow slice of the problem.
+        Pick the smallest tool that fits — we'd rather send you to scribble
+        or perfect_freehand than watch you fight an engine you don't need.
+      </p>
+    </div>
+  </section>
+
+  <!-- FEATURE MATRIX -->
+  <section class="container-site py-14 sm:py-16">
+    <h2 class="font-serif text-display-lg text-paper-50 mb-8">Feature matrix</h2>
+    <div class="card overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-ink-900/60 text-left">
+          <tr class="border-b border-white/[0.06]">
+            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-widest text-ink-500">Feature</th>
+            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-widest text-accent-glow whitespace-nowrap">fluera_canvas</th>
+            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-widest text-ink-500 whitespace-nowrap">flutter_painter</th>
+            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-widest text-ink-500">scribble</th>
+            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-widest text-ink-500 whitespace-nowrap">perfect_freehand</th>
+            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-widest text-ink-500 whitespace-nowrap">CustomPaint</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr class="border-b border-white/[0.03] last:border-0">
+              <td class="px-4 py-3 text-paper-100">{r.f}</td>
+              <td class="px-4 py-3 text-accent-glow">{r.fc}</td>
+              <td class="px-4 py-3 text-paper-300">{r.fp}</td>
+              <td class="px-4 py-3 text-paper-300">{r.sc}</td>
+              <td class="px-4 py-3 text-paper-300">{r.pf}</td>
+              <td class="px-4 py-3 text-paper-300">{r.cp}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- WHEN TO USE -->
+  <section class="border-t border-white/[0.04] bg-ink-900/40">
+    <div class="container-site py-16 sm:py-20">
+      <h2 class="font-serif text-display-lg text-paper-50 mb-3">When to pick which</h2>
+      <p class="prose-ink mb-10 max-w-2xl">
+        None of these are bad. They're built for different scopes. Here's the
+        short take — read it and pick the smallest one that solves your
+        problem.
+      </p>
+
+      <div class="grid gap-5 md:grid-cols-2">
+        {alternatives.map((a) => (
+          <div class="card p-7">
+            <div class="flex items-baseline justify-between mb-3 gap-3 flex-wrap">
+              <h3 class="font-serif text-xl text-paper-50">{a.name}</h3>
+              <a href={a.url} target="_blank" rel="noopener" class="text-[11px] font-mono uppercase tracking-widest text-accent-glow">Open ↗</a>
+            </div>
+            <p class="text-sm text-paper-200 mb-3 italic">{a.tagline}</p>
+            <p class="prose-ink text-[0.95rem] mb-4">{a.body}</p>
+            <p class="text-sm text-paper-100">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-ink-500 mr-2">Pick</span>
+              {a.pick}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHEN TO USE FLUERA -->
+  <section class="container-site py-16 sm:py-20">
+    <div class="card p-8 sm:p-10 border-accent-ink/40 bg-gradient-to-b from-accent-ink/10 to-transparent">
+      <p class="eyebrow mb-4 text-accent-glow">When to pick fluera_canvas</p>
+      <h2 class="font-serif text-display-lg text-paper-50 mb-5">
+        You want a real drawing surface.
+      </h2>
+      <ul class="space-y-3 text-paper-100 text-[0.95rem]">
+        <li class="flex gap-3"><span class="text-accent-glow">✓</span><span>Your canvas is the product, not a feature. Users spend minutes or hours on it, not seconds.</span></li>
+        <li class="flex gap-3"><span class="text-accent-glow">✓</span><span>You need infinite pan/zoom with camera physics that feel native, not DIY.</span></li>
+        <li class="flex gap-3"><span class="text-accent-glow">✓</span><span>Real stylus support matters — pressure, tilt, prediction, hover, palm rejection that actually works.</span></li>
+        <li class="flex gap-3"><span class="text-accent-glow">✓</span><span>You'll hit the scene-graph limit. Thousands of elements, viewport culling, hit testing in O(log n).</span></li>
+        <li class="flex gap-3"><span class="text-accent-glow">✓</span><span>60 FPS on mid-range Android without handing off to WebGL or a separate app.</span></li>
+      </ul>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/quickstart" class="btn-primary">5-minute quickstart</a>
+        <a href={SITE.github} target="_blank" rel="noopener" class="btn-secondary">See the code</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

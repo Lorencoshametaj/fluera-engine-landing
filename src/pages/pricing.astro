@@ -3,91 +3,148 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { SITE } from "@/lib/site";
 
 const title = "Pricing";
-const description = "fluera_canvas is MIT, free for any use. fluera_engine_pro is a commercial add-on for advanced features.";
+const description =
+  "fluera_canvas is MIT, free forever. fluera_canvas_gpu is the commercial GPU SDK with 8 feature pillars — €399/year Indie, €1,499/year Team, custom Enterprise.";
 
+// MIT core advertised at the top — funnel.
 const coreFeatures = [
-  "Infinite canvas controller + pressure/tilt gestures",
-  "Scene graph with stroke, shape, text, image, path nodes",
-  "3 base brushes (ballpoint, pencil, highlighter)",
-  "One-Euro smoothing, palm rejection, stylus prediction",
+  "Infinite canvas controller + pressure / tilt gestures",
+  "Scene graph (stroke, shape, text, image, path nodes)",
+  "Layer system + 8 standard blend modes",
   "Pen, eraser, shape, text, image tools",
   "Undo/redo with delta tracking",
-  "PNG · JPEG · WebP · SVG export",
+  "PNG · JPEG · WebP raster export",
   "iOS · Android · macOS · Windows · Linux · Web",
-  "Module system for custom extensions",
+  "MIT licensed — ship anywhere, including commercial apps",
 ];
 
-const proFeatures = [
-  "All 13 brush engines + custom brush SDK",
-  "Real-time collaboration (CRDT, vector clocks)",
-  "AI: LaTeX OCR · proactive analysis · chat",
-  "PDF annotation + multi-page export",
-  "Timeline branching + time-travel playback",
-  "SQLCipher AES-256 encrypted storage",
-  "Native GPU live-stroke plugin (Vulkan · Metal)",
-  "Commercial-use license",
-  "Priority support + SLA",
+// Indie tier features (full canvas_gpu 1.4.0 surface).
+const indieFeatures = [
+  "Everything in MIT core",
+  "GPU live-stroke pipeline (Vulkan / Metal / GL / D3D11 / WebGPU)",
+  "Layer compositor — 16 Photoshop-grade blend modes",
+  "Time Travel / Replay (record + scrub + GIF export)",
+  "Vector Export — SVG + PDF (multi-page, OCG layers, watermark)",
+  "Brush textures + 8 curated paper-grain combos",
+  "Pressure / Velocity curve editor (Material 3)",
+  "Smart shape recognition (RDP + circle fit)",
+  "CRDT real-time collaboration — bring your own transport",
+  "BYO-database cloud sync — Supabase / Firebase / S3 / SQLite recipes",
+  "Private GitHub repo access while your subscription is active",
+  "Email support",
+];
+
+const teamExtras = [
+  "Everything in Indie",
+  "Up to 5 developers per organization",
+  "Apps with up to 100k MAU",
+  "No revenue cap on the licensed product",
+  "Onboarding call (30 min) — wire it into your codebase",
+  "Priority email support (24h response target)",
+];
+
+const enterpriseExtras = [
+  "Everything in Team",
+  "Unlimited developers, unlimited MAU",
+  "RBAC permissions + read-only viewer mode (V2)",
+  "Server-side audit log of every collab event (V2)",
+  "End-to-end encryption recipe + reference adapter (V2)",
+  "Custom SLA (4h response, 99.9 % uptime support)",
+  "IP indemnification clause + custom EULA",
+  "Quarterly roadmap call",
+];
+
+const tierMatrix = [
+  { feature: "MIT core (fluera_canvas)", core: true, indie: true, team: true, enterprise: true },
+  { feature: "GPU live-stroke pipeline", core: false, indie: true, team: true, enterprise: true },
+  { feature: "16 Photoshop blend modes", core: false, indie: true, team: true, enterprise: true },
+  { feature: "Time Travel + GIF export", core: false, indie: true, team: true, enterprise: true },
+  { feature: "Vector Export (SVG + PDF)", core: false, indie: true, team: true, enterprise: true },
+  { feature: "Brush textures + paper grain", core: false, indie: true, team: true, enterprise: true },
+  { feature: "Pressure curve editor", core: false, indie: true, team: true, enterprise: true },
+  { feature: "Shape recognition", core: false, indie: true, team: true, enterprise: true },
+  { feature: "CRDT real-time collaboration", core: false, indie: true, team: true, enterprise: true },
+  { feature: "BYO cloud sync (11 recipes)", core: false, indie: true, team: true, enterprise: true },
+  { feature: "Developers", core: "unlimited", indie: "1", team: "up to 5", enterprise: "unlimited" },
+  { feature: "MAU cap (your app)", core: "—", indie: "< 10k", team: "< 100k", enterprise: "unlimited" },
+  { feature: "Licensee revenue cap", core: "—", indie: "< €200k", team: "—", enterprise: "—" },
+  { feature: "RBAC / audit log / E2E encryption", core: false, indie: false, team: false, enterprise: true },
+  { feature: "Custom SLA + IP indemnification", core: false, indie: false, team: false, enterprise: true },
 ];
 
 const faqs = [
   {
-    q: "What's the license for fluera_canvas?",
-    a: "MIT — the standard permissive license. Use it in personal, open-source or commercial products. No royalties, no change-date clauses, no attribution requirements beyond the MIT notice.",
+    q: "What's the license model?",
+    a: "fluera_canvas (MIT) — free forever, on pub.dev, ship in any product. fluera_canvas_gpu (commercial) — annual subscription €399 / €1,499 / Enterprise. Honor system: no license keys, no telemetry, no enforcement runtime. You self-certify your tier annually.",
   },
   {
-    q: "Do I need Pro to ship a commercial app?",
-    a: "No. The MIT core (fluera_canvas) is enough for most drawing apps. Pro is for teams that want the advanced modules — collaboration, AI, PDF annotation, the full brush set, encrypted storage — without building them themselves.",
+    q: "What happens if I don't renew the subscription?",
+    a: "Perpetual fallback. You keep the last version you received during the active subscription, forever, for ongoing development and distribution of your Licensee Applications. You lose access to the private repo, future updates, and support — but nothing in production breaks. (Standard MUI X / Tailwind UI hybrid model.)",
   },
   {
-    q: "How is Pro priced?",
-    a: "Per product, per seat, or per company depending on scale. We're onboarding the first design partners — pricing is negotiated directly so we can match your stage. Email us with a sentence on what you're building.",
+    q: "How does delivery work?",
+    a: "Paddle Checkout (overlay) → enter your GitHub username on the success page → instant invite to the private fluera_canvas_gpu repo (read-only collaborator). Add it to your project via pubspec_overrides.yaml. Email with welcome + EULA PDF + Discord invite within 60 seconds.",
   },
   {
-    q: "Do you offer discounts for startups and researchers?",
-    a: "Yes. Pre-seed and seed startups, academic researchers, and accessibility-focused projects get significant discounts on Pro. Just ask.",
+    q: "What are the dev / MAU / revenue caps about?",
+    a: "Soft trigger to upgrade tier honestly. Indie targets a single developer building one or two apps with realistic indie scale. If you grow past 10k MAU or your Licensee revenue passes €200k/year, please upgrade to Team. We don't audit by default — but reserve the right under standard contractual audit clauses.",
   },
   {
-    q: "Can I build a drawing app that competes with Fluera?",
-    a: "Yes. MIT puts no restrictions on what you build. Pro follows the same spirit — a standard commercial license with no field-of-use limits.",
+    q: "Who actually charges my card?",
+    a: "Paddle.com is our Merchant of Record. They handle the transaction, VAT/GST/sales-tax compliance worldwide, the customer portal for invoices and cancellations, and refunds. Your statement will read 'PADDLE.NET* FLUERA'. We get a clean monthly net payout — and you don't have to worry about which country's tax law applies.",
   },
   {
-    q: "Is there a trial for Pro?",
-    a: "We give design partners a time-boxed trial license. Reach out — it's a short conversation.",
+    q: "Are EUR / VAT prices final?",
+    a: "Prices shown are net of VAT. Paddle calculates and adds the appropriate tax per buyer location at checkout (EU VAT, US sales tax, Australian GST, …). EU B2B buyers can enter a valid VAT number for reverse-charge. Receipts and tax-compliant invoices are available in the Paddle customer portal linked from your welcome email.",
+  },
+  {
+    q: "Can I try before I buy?",
+    a: "fluera_canvas (the MIT core) is fully functional and lets you build a real drawing app today. The commercial GPU SDK isn't free to trial yet — first 10 design partners get a 30-day full-refund window if not satisfied. Email " + SITE.contactEmail + " to be considered.",
+  },
+  {
+    q: "Discounts for startups, students, OSS maintainers?",
+    a: "Pre-seed startups, indie OSS maintainers with a real public project, and accessibility-focused use cases get 30 % off Indie / Team. Just email with a sentence on what you're building.",
+  },
+  {
+    q: "What's the binary size impact?",
+    a: "fluera_canvas core adds ~2 MB to a Flutter app. fluera_canvas_gpu adds ~5 MB on Android (arm64 + armv7 + x86_64 native plugin) plus 550 KB texture assets. iOS / macOS adds less because Metal is system-provided. Web adds ~1 MB (WebGPU shaders).",
   },
 ];
 ---
 
 <BaseLayout title={title} description={description}>
+  <!-- HERO -->
   <section class="border-b border-white/[0.04]">
     <div class="container-site py-16 sm:py-20">
       <p class="eyebrow mb-5 text-accent-glow">Pricing</p>
       <h1 class="font-serif text-display-xl text-paper-50 mb-5 max-w-3xl">
-        MIT core. Commercial Pro.
+        MIT core, free forever. <span class="text-accent-glow">Commercial GPU</span> when you need it.
       </h1>
       <p class="prose-ink text-lg max-w-2xl">
-        <code class="font-mono text-accent-glow">fluera_canvas</code> is MIT —
-        free forever, no strings. Pro is a separate commercial package for
-        teams that want the advanced modules on top.
+        <code class="font-mono text-accent-glow">fluera_canvas</code> is MIT — ship it in any product, no royalties.
+        <code class="font-mono text-accent-glow">fluera_canvas_gpu</code> is the commercial SDK with 8 feature pillars
+        (GPU live stroke, layer compositor, time travel, vector export, brush textures, pressure curve, shape recognition,
+        CRDT collab, cloud sync). Annual subscription, perpetual fallback, honor system.
       </p>
     </div>
   </section>
 
-  <!-- TIERS -->
+  <!-- 3 TIERS -->
   <section class="container-site py-16 sm:py-20">
-    <div class="grid gap-6 md:grid-cols-2">
-      <!-- CORE -->
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- INDIE -->
       <div class="card p-8 sm:p-10 flex flex-col">
-        <div class="pill mb-5 text-[11px] text-signal-ok">fluera_canvas · MIT</div>
-        <h2 class="font-serif text-3xl text-paper-50 mb-2">Core</h2>
+        <div class="pill mb-5 text-[11px] text-accent-glow">Indie</div>
+        <h2 class="font-serif text-3xl text-paper-50 mb-2">Indie</h2>
         <p class="prose-ink mb-6">
-          The infinite-canvas SDK. MIT-licensed, on pub.dev, free for any use.
+          The full GPU SDK for one developer building one or two apps.
         </p>
         <div class="mb-8">
-          <div class="font-serif text-5xl text-paper-50">Free</div>
-          <div class="text-sm text-ink-500 mt-1">MIT · forever</div>
+          <div class="font-serif text-5xl text-paper-50">€399<span class="text-2xl text-ink-500">/year</span></div>
+          <div class="text-sm text-ink-500 mt-1">1 developer · MAU &lt; 10k · revenue &lt; €200k</div>
         </div>
         <ul class="space-y-2.5 text-sm text-paper-200 mb-8 flex-1">
-          {coreFeatures.map((f) => (
+          {indieFeatures.map((f) => (
             <li class="flex gap-3">
               <span class="text-signal-ok">✓</span>
               <span>{f}</span>
@@ -95,25 +152,23 @@ const faqs = [
           ))}
         </ul>
         <div class="flex flex-wrap gap-3">
-          <a href={SITE.pubDev} target="_blank" rel="noopener" class="btn-secondary">pub.dev</a>
-          <a href={SITE.github} target="_blank" rel="noopener" class="btn-secondary">GitHub</a>
-          <a href="/quickstart" class="btn-ghost">Quickstart →</a>
+          <button type="button" class="btn-primary paddle-buy" data-tier="indie">Buy Indie €399</button>
         </div>
       </div>
 
-      <!-- PRO -->
+      <!-- TEAM -->
       <div class="card p-8 sm:p-10 flex flex-col border-accent-ink/40 bg-gradient-to-b from-accent-ink/10 to-transparent">
-        <div class="pill mb-5 text-[11px] text-accent-glow">fluera_engine_pro · Commercial</div>
-        <h2 class="font-serif text-3xl text-paper-50 mb-2">Pro</h2>
+        <div class="pill mb-5 text-[11px] text-accent-glow">Team · Most popular</div>
+        <h2 class="font-serif text-3xl text-paper-50 mb-2">Team</h2>
         <p class="prose-ink mb-6">
-          Advanced modules layered on core. Priced per product or per seat.
+          For agencies and product teams up to 5 developers.
         </p>
         <div class="mb-8">
-          <div class="font-serif text-5xl text-paper-50">Contact us</div>
-          <div class="text-sm text-ink-500 mt-1">Early-partner pricing available</div>
+          <div class="font-serif text-5xl text-paper-50">€1,499<span class="text-2xl text-ink-500">/year</span></div>
+          <div class="text-sm text-ink-500 mt-1">5 developers · MAU &lt; 100k · no revenue cap</div>
         </div>
         <ul class="space-y-2.5 text-sm text-paper-200 mb-8 flex-1">
-          {proFeatures.map((f) => (
+          {teamExtras.map((f) => (
             <li class="flex gap-3">
               <span class="text-accent-glow">✓</span>
               <span>{f}</span>
@@ -121,10 +176,100 @@ const faqs = [
           ))}
         </ul>
         <div class="flex flex-wrap gap-3">
-          <a href={`mailto:${SITE.contactEmail}?subject=Fluera%20Engine%20Pro`} class="btn-primary">Talk to us</a>
-          <a href={SITE.github} target="_blank" rel="noopener" class="btn-ghost">See core on GitHub →</a>
+          <button type="button" class="btn-primary paddle-buy" data-tier="team">Buy Team €1,499</button>
         </div>
       </div>
+
+      <!-- ENTERPRISE -->
+      <div class="card p-8 sm:p-10 flex flex-col">
+        <div class="pill mb-5 text-[11px] text-paper-200">Enterprise</div>
+        <h2 class="font-serif text-3xl text-paper-50 mb-2">Enterprise</h2>
+        <p class="prose-ink mb-6">
+          Custom contract for larger orgs that need RBAC, audit log, SLA.
+        </p>
+        <div class="mb-8">
+          <div class="font-serif text-5xl text-paper-50">Contact us</div>
+          <div class="text-sm text-ink-500 mt-1">starts at €3k+/year · custom SLA</div>
+        </div>
+        <ul class="space-y-2.5 text-sm text-paper-200 mb-8 flex-1">
+          {enterpriseExtras.map((f) => (
+            <li class="flex gap-3">
+              <span class="text-paper-200">✓</span>
+              <span>{f}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="flex flex-wrap gap-3">
+          <a href={`mailto:${SITE.contactEmail}?subject=Fluera%20canvas_gpu%20Enterprise`} class="btn-secondary">Talk to us</a>
+        </div>
+      </div>
+    </div>
+
+    <p class="prose-ink text-sm text-ink-500 mt-8 text-center">
+      Sold via <a href="https://paddle.com" target="_blank" rel="noopener" class="text-accent-glow underline">Paddle</a> (Merchant of Record) — automatic VAT / GST / sales-tax per buyer country, EU B2B reverse-charge supported.
+      <br />
+      Annual subscription with <strong class="text-paper-200">perpetual fallback</strong> — keep the last version received forever, even if you don't renew.
+    </p>
+  </section>
+
+  <!-- FREE CORE CALLOUT -->
+  <section class="border-y border-white/[0.04] bg-ink-900/40">
+    <div class="container-site py-16">
+      <div class="grid gap-8 md:grid-cols-2 items-center">
+        <div>
+          <div class="pill mb-5 text-[11px] text-signal-ok">fluera_canvas · MIT · pub.dev</div>
+          <h2 class="font-serif text-display-lg text-paper-50 mb-4">Try the MIT core first.</h2>
+          <p class="prose-ink mb-4">
+            <code class="font-mono text-accent-glow">fluera_canvas</code> is free, public, and battle-tested in
+            the Fluera flagship app. Build a complete infinite-canvas drawing app today, decide later if
+            you need the commercial GPU SDK on top.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href={SITE.pubDev} target="_blank" rel="noopener" class="btn-secondary">flutter pub add fluera_canvas</a>
+            <a href={SITE.github} target="_blank" rel="noopener" class="btn-ghost">GitHub →</a>
+          </div>
+        </div>
+        <div>
+          <ul class="space-y-2.5 text-sm text-paper-200">
+            {coreFeatures.map((f) => (
+              <li class="flex gap-3">
+                <span class="text-signal-ok">✓</span>
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="container-site py-16 sm:py-20">
+    <h2 class="font-serif text-display-lg text-paper-50 mb-8">Tier comparison</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-white/[0.04] text-left">
+            <th class="py-3 pr-4 font-medium text-paper-200">Feature</th>
+            <th class="py-3 px-4 font-medium text-paper-200">MIT core</th>
+            <th class="py-3 px-4 font-medium text-accent-glow">Indie</th>
+            <th class="py-3 px-4 font-medium text-accent-glow">Team</th>
+            <th class="py-3 px-4 font-medium text-paper-200">Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tierMatrix.map((row) => (
+            <tr class="border-b border-white/[0.02]">
+              <td class="py-3 pr-4 text-paper-100">{row.feature}</td>
+              {[row.core, row.indie, row.team, row.enterprise].map((cell) => (
+                <td class="py-3 px-4 text-paper-200">
+                  {typeof cell === "boolean" ? (cell ? "✓" : "—") : cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   </section>
 
@@ -133,7 +278,6 @@ const faqs = [
     <div class="container-site max-w-3xl py-16 sm:py-20">
       <p class="eyebrow mb-5 text-accent-glow">FAQ</p>
       <h2 class="font-serif text-display-lg text-paper-50 mb-10">Common questions</h2>
-
       <div class="space-y-8">
         {faqs.map((f) => (
           <div>
@@ -142,7 +286,6 @@ const faqs = [
           </div>
         ))}
       </div>
-
       <div class="mt-14 pt-10 border-t border-white/[0.04]">
         <p class="text-paper-200">
           Still unsure? Email
@@ -152,4 +295,47 @@ const faqs = [
       </div>
     </div>
   </section>
+
+  <!--
+    Paddle.js overlay checkout. Loads Paddle's hosted SDK, opens an
+    overlay checkout for the tier the user clicked. After payment
+    Paddle redirects to /success?_ptxn=txn_… where success.astro
+    asks for the GitHub username and POSTs to the worker.
+  -->
+  <script src="https://cdn.paddle.com/paddle/v2/paddle.js" is:inline></script>
+  <script is:inline define:vars={{
+    paddleEnv: import.meta.env.PUBLIC_PADDLE_ENV ?? 'production',
+    paddleClientToken: import.meta.env.PUBLIC_PADDLE_CLIENT_TOKEN ?? '',
+    priceIdIndie: import.meta.env.PUBLIC_PADDLE_PRICE_INDIE ?? '',
+    priceIdTeam: import.meta.env.PUBLIC_PADDLE_PRICE_TEAM ?? '',
+  }}>
+    if (paddleEnv === 'sandbox') {
+      Paddle.Environment.set('sandbox');
+    }
+    Paddle.Initialize({
+      token: paddleClientToken,
+      checkout: {
+        settings: {
+          displayMode: 'overlay',
+          theme: 'dark',
+          variant: 'one-page',
+          successUrl: window.location.origin + '/success',
+        },
+      },
+    });
+
+    document.querySelectorAll('button.paddle-buy').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tier = btn.getAttribute('data-tier');
+        const priceId = tier === 'team' ? priceIdTeam : priceIdIndie;
+        if (!priceId) {
+          alert('Checkout not configured yet. Please email support@fluera.dev.');
+          return;
+        }
+        Paddle.Checkout.open({
+          items: [{ priceId, quantity: 1 }],
+        });
+      });
+    });
+  </script>
 </BaseLayout>

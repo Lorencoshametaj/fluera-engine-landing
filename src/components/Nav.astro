@@ -22,6 +22,15 @@ const isActive = (href: string) => path === href || path.startsWith(href + "/");
         Quickstart
       </a>
       <a
+        href="/compare"
+        class:list={[
+          "btn-ghost text-sm",
+          isActive("/compare") ? "text-paper-50" : "",
+        ]}
+      >
+        Compare
+      </a>
+      <a
         href="/pricing"
         class:list={[
           "btn-ghost text-sm",

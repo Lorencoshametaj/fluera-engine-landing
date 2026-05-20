@@ -1,0 +1,150 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/lib/site";
+
+const title = "Why I'm open-sourcing the Fluera canvas";
+const description = "The story behind fluera_canvas — why it exists, what it solves, and why MIT.";
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="border-b border-white/[0.04]">
+    <div class="container-site max-w-3xl py-16 sm:py-20">
+      <p class="eyebrow mb-5 text-accent-glow">The story</p>
+      <h1 class="font-serif text-display-xl text-paper-50 mb-5">
+        Why I'm open-sourcing the Fluera canvas.
+      </h1>
+      <p class="prose-ink text-lg">
+        Short version: the Flutter ecosystem is missing a grown-up 2D canvas.
+        I wrote one because I had to. Now I'm sharing it because keeping it
+        private helps nobody.
+      </p>
+    </div>
+  </section>
+
+  <article class="container-site max-w-3xl py-16 sm:py-20 prose-v2 prose-v2-essay">
+    <h2>What was missing</h2>
+    <p>
+      When I started building <a href={SITE.parentApp} target="_blank" rel="noopener">Fluera</a>,
+      I looked for a Flutter canvas library that could do four things at once:
+      infinite pan/zoom with real physics, pressure-sensitive input that
+      didn't lie about tilt and predicted strokes, a scene graph that scaled
+      past a thousand elements, and rendering that stayed at 60 FPS on a
+      mid-range Android. I couldn't find one.
+    </p>
+    <p>
+      What exists is excellent for its scope. <code>perfect_freehand</code>
+      gives you a beautiful stroke algorithm. <code>scribble</code> gives you
+      a clean signature pad. <code>flutter_painter</code> gives you simple
+      vector tools on a bounded surface. None of them were built to be the
+      drawing layer of a real production app with years of use ahead.
+    </p>
+    <p>
+      So I wrote one from scratch. Vulkan renderer on Android, Metal on
+      iOS/macOS, OpenGL fallback on Linux, Direct3D on Windows, WebGPU on the
+      web. Scene graph with R-tree indexing. One-Euro filter for input
+      smoothing. Apple Pencil prediction on iOS. Stylus hover on iPadOS. Palm
+      rejection that actually rejects palms. It took months.
+    </p>
+
+    <h2>Why give it away</h2>
+    <p>
+      The moment you write infrastructure good enough for your own product,
+      you're sitting on a second product whether you want to or not. Keeping
+      it private has three real costs:
+    </p>
+    <ol>
+      <li>
+        <strong>It rots alone.</strong> Bugs I don't hit, someone else does.
+        Private code gets feedback from one developer. Public code gets
+        feedback from everyone who touches it.
+      </li>
+      <li>
+        <strong>It wastes the Flutter community's time.</strong> Somewhere
+        right now, another solo dev or small team is writing pieces of this
+        from scratch, worse than they could. Every hour they spend on
+        infrastructure is an hour they don't spend on their actual product.
+      </li>
+      <li>
+        <strong>It's a worse moat than the app.</strong> My moat is <em>Fluera
+        the app</em> — the pedagogy, the UX, the brand. Not the canvas
+        engine. Giving the canvas away costs me nothing and builds a
+        secondary audience of developers who trust my work.
+      </li>
+    </ol>
+
+    <h2>Why MIT, not "source-available"</h2>
+    <p>
+      I considered BSL 1.1 with a change date, Elastic License 2.0, and dual
+      MIT+commercial. I picked plain MIT for the core package because:
+    </p>
+    <ul>
+      <li>
+        The Flutter community is allergic to non-standard licenses. A
+        non-MIT package doesn't get installed — people click the license
+        field on pub.dev and close the tab.
+      </li>
+      <li>
+        The things worth charging for aren't in the core. Native GPU live-stroke,
+        16 Photoshop blend modes, real-time CRDT collaboration, time-travel replay,
+        vector export, brush textures + paper grain, BYO-database cloud sync —
+        those live in <code>fluera_canvas_gpu</code>, shipped under a normal
+        commercial license (€399/year Indie, €1,499/year Team). Keeping the
+        split clean is easier than legally licensing every line.
+      </li>
+      <li>
+        MIT removes every question a company lawyer could raise about
+        shipping the core in a commercial product. That friction kills
+        adoption; adoption is what I need.
+      </li>
+    </ul>
+
+    <h2>What you can expect</h2>
+    <p>
+      <code>fluera_canvas</code> will ship on pub.dev when the API stabilises
+      a little further. Until then the signals to watch:
+    </p>
+    <ul>
+      <li>
+        <strong>Versioning is honest.</strong> Until <code>1.0</code> anything
+        can change. Pin to a specific pre-release in production and upgrade
+        deliberately.
+      </li>
+      <li>
+        <strong>Issues get read.</strong> I'm the only maintainer right now.
+        Your bug report is my roadmap.
+      </li>
+      <li>
+        <strong>Pro is always optional.</strong> Core stays a complete,
+        working canvas. No crippleware.
+      </li>
+    </ul>
+
+    <h2>If this is useful</h2>
+    <p>
+      Star the repo, kick the tires, tell me what breaks. If you're building
+      something serious on top, reach out — the first design partners get
+      priority on bugs and heavily discounted Pro licenses.
+    </p>
+    <p>
+      — Lorenco
+    </p>
+    <p>
+      <a href={SITE.github} target="_blank" rel="noopener">github.com/Lorencoshametaj/fluera_canvas</a>
+      <br />
+      <a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a>
+    </p>
+  </article>
+
+  <section class="border-t border-white/[0.04] bg-ink-900/40">
+    <div class="container-site max-w-3xl py-14 text-center">
+      <p class="eyebrow mb-4 text-accent-glow">Try it</p>
+      <h2 class="font-serif text-display-lg text-paper-50 mb-5">
+        5 minutes to a working canvas.
+      </h2>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <a href="/quickstart" class="btn-primary">Quickstart</a>
+        <a href={SITE.github} target="_blank" rel="noopener" class="btn-secondary">GitHub</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

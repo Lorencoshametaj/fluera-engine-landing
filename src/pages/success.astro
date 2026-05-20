@@ -1,0 +1,120 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const title = "Welcome — claim your repo invite";
+const description = "Enter your GitHub username to receive your fluera_canvas_gpu private repo invite.";
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="container-site py-20">
+    <div class="max-w-xl mx-auto card p-10">
+      <p class="eyebrow mb-5 text-accent-glow">Almost there</p>
+      <h1 class="font-serif text-display-lg text-paper-50 mb-4">
+        Welcome — one last step.
+      </h1>
+      <p class="prose-ink mb-8">
+        Payment confirmed. Enter your GitHub username and we'll send you a
+        collaborator invite to the private <code class="font-mono text-accent-glow">fluera_canvas_gpu</code>
+        repo, plus a welcome email with the quickstart.
+      </p>
+
+      <form id="claim-form" class="space-y-6">
+        <div>
+          <label for="github_username" class="block text-sm font-medium text-paper-100 mb-2">
+            GitHub username
+          </label>
+          <input
+            type="text"
+            id="github_username"
+            name="github_username"
+            required
+            pattern="[a-zA-Z0-9-]{1,39}"
+            placeholder="your-github-handle"
+            class="w-full px-4 py-3 bg-ink-900 border border-white/10 rounded-md text-paper-50 focus:border-accent-ink focus:outline-none focus:ring-2 focus:ring-accent-ink/30"
+          />
+          <p class="text-xs text-ink-500 mt-2">
+            Just the username, no <code>@</code>. e.g. <code>octocat</code>.
+          </p>
+        </div>
+        <button type="submit" class="btn-primary w-full" id="submit-btn">
+          Send my repo invite
+        </button>
+      </form>
+
+      <div id="success-msg" class="hidden mt-8 p-6 bg-signal-ok/10 border border-signal-ok/30 rounded-md">
+        <p class="text-signal-ok font-medium mb-2">✓ Invite sent.</p>
+        <p class="prose-ink text-sm">
+          Check your GitHub notifications and your email inbox. Welcome email
+          arrives within 60 seconds. If anything is missing, write to
+          <a href="mailto:support@fluera.dev" class="text-accent-glow underline">support@fluera.dev</a>.
+        </p>
+      </div>
+
+      <div id="error-msg" class="hidden mt-8 p-6 bg-signal-warn/10 border border-signal-warn/30 rounded-md">
+        <p class="text-signal-warn font-medium mb-2">Something went wrong.</p>
+        <p class="prose-ink text-sm" id="error-detail"></p>
+        <p class="prose-ink text-sm mt-3">
+          Email <a href="mailto:support@fluera.dev" class="text-accent-glow underline">support@fluera.dev</a>
+          with your Paddle order id and we'll grant the invite manually within an hour.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline define:vars={{
+  workerUrl: import.meta.env.PUBLIC_WORKER_URL ?? '',
+}}>
+  // Claim-invite form. Reads `?_ptxn=txn_...` from query string
+  // (Paddle's overlay checkout appends this to the success URL),
+  // POSTs to the Cloudflare Worker which verifies the transaction
+  // is paid + sends invite + email.
+  const params = new URLSearchParams(window.location.search);
+  // Paddle uses `_ptxn`; we also accept `transaction_id` for manual
+  // recovery flows or older redirect formats.
+  const transactionId = params.get('_ptxn') || params.get('transaction_id');
+
+  if (!transactionId) {
+    document.getElementById('claim-form').style.display = 'none';
+    const e = document.getElementById('error-msg');
+    e.classList.remove('hidden');
+    document.getElementById('error-detail').textContent =
+      'Missing transaction id in URL. If you just completed checkout, try clicking the link in your Paddle receipt email or contact support.';
+  }
+
+  document.getElementById('claim-form')?.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending invite…';
+
+    const username = document.getElementById('github_username').value.trim();
+
+    try {
+      if (!workerUrl) {
+        throw new Error('Worker URL is not configured. Contact support.');
+      }
+      const resp = await fetch(workerUrl + '/claim-invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          transaction_id: transactionId,
+          github_username: username,
+        }),
+      });
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(txt || 'Worker returned ' + resp.status);
+      }
+      document.getElementById('claim-form').style.display = 'none';
+      document.getElementById('success-msg').classList.remove('hidden');
+    } catch (err) {
+      const e = document.getElementById('error-msg');
+      e.classList.remove('hidden');
+      document.getElementById('error-detail').textContent =
+        err && err.message ? err.message : String(err);
+      btn.disabled = false;
+      btn.textContent = 'Send my repo invite';
+    }
+  });
+</script>
